@@ -78,8 +78,10 @@ p {
   width: 100%;
   overflow: hidden;
   margin-top: 40px;
-  background: transparent;   /* ⬅️ никакого фона */
+  padding: 0 16px; /* пространство по бокам */
+  box-sizing: border-box;
 }
+
 
 
 .track {
@@ -105,10 +107,11 @@ p {
 /* 📱 адаптация под телефон */
 @media (max-width: 600px) {
   .track img {
-    height: 260px;            /* ⬅️ на телефоне почти во весь экран */
-    margin: 0 12px;
+    height: 260px;
+    margin: 0 6px; /* меньше, чтобы уместилось */
   }
 }
+
 
 
 @keyframes scroll {
@@ -317,10 +320,10 @@ function animateParticles() {
   let avg = sum / dataArray.length;
 
   /* ❄️ СНЕЖИНКИ */
-  if (!isFinal) {
-    // только до финала
-    if (Math.random() < 0.1) createParticle("❄️");
-  }
+if (!isFinal) {
+    if (Math.random() < 0.03) createParticle("❄️"); // ⬅️ 3% шанс, почти в 3 раза реже
+}
+
 
   /* ❤️ СЕРДЕЧКИ */
   if (isFinal) {
@@ -357,3 +360,4 @@ function animateParticles() {
 
 </body>
 </html>
+
