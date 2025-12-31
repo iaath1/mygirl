@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Для тебе ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  height:100vh;
+  overflow:hidden;
+  font-family:'Montserrat', sans-serif;
+  color:white;
+  background: radial-gradient(circle at bottom, #0b1026, #02030f);
+  transition: background 0.2s linear;
+}
+
+canvas { position:fixed; inset:0; z-index:0; }
+
+.screen {
+  position:absolute; inset:0; z-index:2;
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+  text-align:center; padding:20px;
+}
+
+.hidden { opacity:0; pointer-events:none; }
+
+h1 {
+  font-family:'Playfair Display', serif;
+  font-size:clamp(2rem,6vw,3rem);
+  margin-bottom:20px;
+}
+
+p {
+  max-width:700px;
+  font-size:clamp(1rem,4vw,1.25rem);
+  line-height:1.7;
+  min-height:200px;
+}
+
+.hint {
+  opacity:0.8;
+  margin-top:20px;
+  font-size:1.1rem;
+}
+
+.photo {
+  width:min(75vw,300px);
+  border-radius:20px;
+  margin:25px 0;
+  box-shadow:0 0 30px rgba(255,255,255,0.25);
+}
+
+.music-particle {
+  position:fixed;
+  top:-20px;
+  pointer-events:none;
+  z-index:1;
+  animation:fall linear forwards;
+}
+
+@keyframes fall {
+  to { transform:translateY(120vh) rotate(360deg); opacity:0; }
+}
+
+.heart {
+  font-size:3rem;
+  animation:pulse 2s infinite;
+}
+
+.carousel {
+  width: 100%;
+  overflow: hidden;
+  margin-top: 40px;
+  background: transparent;   /* ⬅️ никакого фона */
+}
+
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: scroll 35s linear infinite;
+  align-items: center;
+}
+
+
+.track img {
+  height: 320px;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  margin: 0 8px;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+}
+
+
+
+
+/* 📱 адаптация под телефон */
+@media (max-width: 600px) {
+  .track img {
+    height: 260px;            /* ⬅️ на телефоне почти во весь экран */
+    margin: 0 12px;
+  }
+}
+
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+
+@keyframes pulse {
+  0% { transform:scale(1); }
+  50% { transform:scale(1.2); }
+  100% { transform:scale(1); }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+
+<audio id="music" src="Aurenth_-_lost_in_reality_KLICKAUD.mp3" loop></audio>
+
+<!-- Интро -->
+<div class="screen" id="intro">
+  <h1>Для тебе 💫</h1>
+  <div class="hint">Торкнись екрану ❤️</div>
+</div>
+
+<!-- Основной экран -->
+<div class="screen hidden" id="main">
+  <!-- <h1>С Новим роком, кохана 🎄</h1> -->
+  <img src="we1.jpg" class="photo" alt="Us">
+  <p id="typed"></p>
+  <p id="typed-special" style="margin-top:25px;"></p>
+  <p id="typed-end"></p>
+
+</div>
+
+<!-- Финал -->
+<div class="screen hidden" id="final">
+  <h1>Я кохаю тебе ❤️</h1>
+  <div class="heart">💖</div>
+
+  <div class="carousel">
+    <div class="track">
+      <img src="we3.jpg">
+      <img src="we4.jpg">
+      <img src="we5.jpg">
+      <img src="we2.jpg">
+      <img src="we6.jpg">
+      <img src="we7.jpg">
+      <img src="we8.jpg">
+      <img src="we9.jpg">
+
+      <!-- дублируем для бесконечности -->
+      <img src="we3.jpg">
+      <img src="we4.jpg">
+      <img src="we5.jpg">
+      <img src="we2.jpg">
+      <img src="we6.jpg">
+      <img src="we7.jpg">
+      <img src="we8.jpg">
+      <img src="we9.jpg">
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ===== ЗВЁЗДНОЕ НЕБО =====
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+let stars = [];
+function resize(){canvas.width=innerWidth; canvas.height=innerHeight;}
+window.onresize=resize; resize();
+for(let i=0;i<160;i++){
+  stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*1.5, s:Math.random()*0.4+0.2});
+}
+function drawStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="white";
+  stars.forEach(s=>{
+    ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
+    s.y+=s.s; if(s.y>canvas.height) s.y=0;
+  });
+  requestAnimationFrame(drawStars);
+}
+drawStars();
+
+// ===== ТЕКСТ =====
+const textMain=`Цей рік став для мене особливим завдяки зустрічі з тобою.
+Саме через тебе він був таким щасливим і незабутнім.
+Я безмежно радий, що вперше в житті — і назавжди — зустрів
+та покохав, таку неймовірну, гарну та несамовиту дівчину, як ти.`;
+
+const textSpecial = `Будь зі мною завжди,`;
+
+const textEnd = `а я подарую тобі весь світ 💫`;
+
+const intro=document.getElementById("intro");
+const main=document.getElementById("main");
+const final=document.getElementById("final");
+const typed=document.getElementById("typed");
+const music=document.getElementById("music");
+
+let audioCtx, analyser, dataArray;
+
+// ===== ЗАПУСК ПО ТАПУ =====
+intro.addEventListener("click", start);
+
+function start(){
+  // ===== Web Audio API =====
+  audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  const source = audioCtx.createMediaElementSource(music);
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize=256;
+  dataArray=new Uint8Array(analyser.frequencyBinCount);
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
+
+  music.volume=0; music.play();
+  gsap.to(music,{volume:0.7,duration:3});
+  gsap.to(intro,{opacity:0,duration:1,onComplete:()=>{
+    intro.classList.add("hidden"); main.classList.remove("hidden"); typeText();
+  }});
+  intro.removeEventListener("click",start);
+
+  animateParticles();
+  animateBackground();
+}
+
+// ===== ПЕЧАТЬ ТЕКСТА =====
+function typeText(){
+  let i = 0;
+  typed.textContent = "";
+  const timer = setInterval(() => {
+    typed.textContent += textMain[i];
+    i++;
+    if (i >= textMain.length) {
+      clearInterval(timer);
+      setTimeout(typeSpecialText, 800); // пауза перед важной фразой
+    }
+  }, 40);
+}
+
+function typeSpecialText(){
+  const special = document.getElementById("typed-special");
+  let i = 0;
+  const timer = setInterval(() => {
+    special.textContent += textSpecial[i];
+    i++;
+    if (i >= textSpecial.length) {
+      clearInterval(timer);
+      setTimeout(typeEndText, 600);
+    }
+  }, 70); // ⬅️ МЕДЛЕННЕЕ
+}
+
+function typeEndText(){
+  const end = document.getElementById("typed-end");
+  let i = 0;
+  const timer = setInterval(() => {
+    end.textContent += textEnd[i];
+    i++;
+    if (i >= textEnd.length) {
+      clearInterval(timer);
+      setTimeout(showFinal, 7000); // ⬅️ основной экран +5 сек
+    }
+  }, 45);
+}
+
+
+let isFinal = false;
+
+function showFinal(){
+  isFinal = true; // ⬅️ МЫ В ФИНАЛЕ
+  gsap.to(main,{opacity:0,duration:1,onComplete:()=>{
+    main.classList.add("hidden"); 
+    final.classList.remove("hidden");
+    gsap.from(final,{scale:0.8,opacity:0,duration:1.5});
+  }});
+}
+
+
+// ===== ЧАСТИЦЫ ПОД МУЗЫКУ =====
+function createParticle(symbol){
+  const p=document.createElement("div");
+  p.className="music-particle"; p.textContent=symbol;
+  p.style.left=Math.random()*innerWidth+"px";
+  p.style.fontSize=(Math.random()*18+14)+"px";
+  p.style.animationDuration=(Math.random()*4+5)+"s";
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),10000);
+}
+
+let currentBrightness = 22;     // текущая яркость
+const baseBrightness = 22;     // базовая (чуть темнее)
+const maxBoost = 1.8;          // усиление яркости
+
+function animateParticles() {
+  requestAnimationFrame(animateParticles);
+  analyser.getByteFrequencyData(dataArray);
+
+  let sum = 0;
+  for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+  let avg = sum / dataArray.length;
+
+  /* ❄️ СНЕЖИНКИ */
+  if (!isFinal) {
+    // только до финала
+    if (Math.random() < 0.1) createParticle("❄️");
+  }
+
+  /* ❤️ СЕРДЕЧКИ */
+  if (isFinal) {
+    // в финале — очень редко
+    if (avg > 14 && Math.random() < avg / 350) createParticle("❤️");
+  } else {
+    // до финала — как раньше
+    if (avg > 14 && Math.random() < avg / 100) createParticle("❤️");
+  }
+
+  /* 🌌 ФОН */
+  let targetBrightness = baseBrightness;
+  if (avg > 14) targetBrightness = baseBrightness + avg * maxBoost;
+  currentBrightness += (targetBrightness - currentBrightness) * 0.09;
+
+  document.body.style.background = `
+    radial-gradient(circle at bottom,
+      rgb(
+        ${currentBrightness},
+        ${currentBrightness * 1.35},
+        ${currentBrightness * 2.1}
+      ),
+      #02030f
+    )
+  `;
+}
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
