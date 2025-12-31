@@ -301,7 +301,7 @@ function createParticle(symbol){
   const p=document.createElement("div");
   p.className="music-particle"; p.textContent=symbol;
   p.style.left=Math.random()*innerWidth+"px";
-  p.style.fontSize=(Math.random()*18+14)+"px";
+  p.style.fontSize=(Math.random()*8+6)+"px";
   p.style.animationDuration=(Math.random()*4+5)+"s";
   document.body.appendChild(p);
   setTimeout(()=>p.remove(),10000);
@@ -360,4 +360,5 @@ if (!isFinal) {
 
 </body>
 </html>
+
 
